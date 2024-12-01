@@ -7,10 +7,9 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 bool isTimeSet = false;
 
-// Cài đặt sẵn ngày, tháng, năm
-const int presetYear = 2024;  // Năm mặc định
-const int presetMonth = 12;   // Tháng mặc định
-const int presetDay = 1;      // Ngày mặc định
+const int presetYear = 2024;  
+const int presetMonth = 12;  
+const int presetDay = 1;      
 
 void setup() {
   Serial.begin(9600);
