@@ -3,9 +3,14 @@
 #include <LiquidCrystal_I2C.h>
 
 RTC_DS3231 rtc;
-LiquidCrystal_I2C lcd(0x27, 16, 2); 
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 bool isTimeSet = false;
+
+// Cài đặt sẵn ngày, tháng, năm
+const int presetYear = 2024;  // Năm mặc định
+const int presetMonth = 12;   // Tháng mặc định
+const int presetDay = 1;      // Ngày mặc định
 
 void setup() {
   Serial.begin(9600);
@@ -26,17 +31,18 @@ void setup() {
 void loop() {
   if (!isTimeSet) {
     if (Serial.available()) {
-      String input = Serial.readStringUntil('\n'); 
-      input.trim(); 
+      String input = Serial.readStringUntil('\n');
+      input.trim();
 
       if (input.length() == 6 && input.toInt() > 0) {
         int hour = input.substring(0, 2).toInt();
         int minute = input.substring(2, 4).toInt();
         int second = input.substring(4, 6).toInt();
+
         if (hour >= 0 && hour < 24 && minute >= 0 && minute < 60 && second >= 0 && second < 60) {
-          DateTime now = rtc.now(); 
-          rtc.adjust(DateTime(now.year(), now.month(), now.day(), hour, minute, second));
+          rtc.adjust(DateTime(presetYear, presetMonth, presetDay, hour, minute, second));
           isTimeSet = true;
+
           lcd.clear();
           lcd.print("Time Set Done!");
           delay(2000);
